@@ -3,30 +3,25 @@ using namespace std;
 
 int main()
 {
+  ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
   int t;
   cin >> t;
   while (t--)
   {
-    int n, k, black = 0, white = 0, maxB = 0, minW = INT_MAX;
-    string s;
-    // 5  3 BBWBW
+    int n, k, black = 0, ans = INT_MAX;
+
+    char c;
     cin >> n >> k;
-    cin >> s;
-    for (int i = 0; i < s.size(); i++)
+    vector<int> pref(n + 1, 0);
+    for (int i = 1; i <= n; i++)
     {
-      if (s[i] == 'W')
-      {
-        black = 0;
-        minW = min(minW, ++white);
-      }
-      else
-      {
-        white = 0;
-        maxB = max(maxB, ++black);
-      }
+      cin >> c;
+      pref[i] = pref[i - 1] + (c == 'W');
     }
-    // cout << maxB << '\t' << minW << endl;
-    (maxB >= k) ? cout << "0\n" : (maxB - k == 0) ? cout << minW << endl
-                                                  : cout << k - maxB << endl;
+
+    for (int i = 0; i + k <= n; i++)
+      ans = min(ans, pref[k + i] - pref[i]);
+
+    cout << ans << endl;
   }
 }
