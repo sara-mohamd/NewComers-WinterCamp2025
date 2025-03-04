@@ -3,31 +3,27 @@ using namespace std;
 
 int main()
 {
-  int n;
+  long long n, ctr = 0;
   cin >> n;
-  int b[n], a[n] = {0};
-  for (int i = 0; i < n; i++)
-    cin >> b[i];
-  a[0] = b[0];
-  int stps = 1;
-  for (int i = 1; i < n; i++)
+  vector<long long> a(n + 1, 0),
+      pref(n + 1, 0);
+  for (int i = 1; i <= n; i++)
   {
-    a[i] = a[i - 1];
-    if (b[i] == a[i])
-      continue;
-    else
+    cin >> a[i];
+    pref[i] = pref[i - 1];
+    if (pref[i] > a[i])
     {
-      if (a[i] - 1 == b[i])
-      {
-        a[i] -= 1;
-        stps++;
-      }
-      else if (a[i] + 1 == b[i])
-      {
-        a[i] += 1;
-        stps++;
-      }
+      ctr += abs(a[i] - pref[i]);
+      pref[i] -= (pref[i] - a[i]);
     }
+    if (pref[i] < a[i])
+    {
+      ctr += abs(a[i] - pref[i]);
+      pref[i] += (a[i] - pref[i]);
+    }
+    if (pref[i] == a[i])
+      continue;
   }
-  cout << stps;
+  cout << ctr << endl;
+  return 0;
 }
